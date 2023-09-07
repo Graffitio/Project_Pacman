@@ -1,0 +1,10 @@
+09:12:49 **** Incremental Build of configuration Debug for project Project_PackMan_ ****
+make -j4 all 
+arm-none-eabi-size   Project_PackMan_.elf 
+   text	   data	    bss	    dec	    hex	filename
+  26968	    116	   2388	  29472	   7320	Project_PackMan_.elf
+Finished building: default.size.stdout
+ 
+
+09:12:49 Build Finished. 0 errors, 0 warnings. (took 774ms)
+

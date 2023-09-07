@@ -99,10 +99,10 @@ void SystemClock_Config(void);
 Direction Dir_Joystick() // 조이스틱 방향 출력 함수
 {
 	// 중간값에 가까워질수록 민감도 높아짐.
-	if(dir[0] > 3150) return LEFT;
-	else if(dir[0] < 600) return RIGHT;
-	else if(dir[1] > 3110) return UP;
-	else if(dir[1] < 600) return DOWN;
+	if(dir[0] > 3190) return LEFT;
+	else if(dir[0] < 500) return RIGHT;
+	else if(dir[1] > 3190) return UP;
+	else if(dir[1] < 480) return DOWN;
 	else return NONE;
 }
 
@@ -513,7 +513,9 @@ int main(void)
 		game_status = GameStatus(&pacman, &octopus);
 
 //		HAL_Delay(100);
-		HAL_Delay(45);
+		HAL_Delay(100);
+		LCD_Display_Charactor(&pacman);
+		LCD_Display_Enemy(octopus);
 		TIM3->CCR1 = 0;
 	}
 	else if(game_status == WIN)

@@ -60,8 +60,8 @@ all: main-build
 main-build: Project_PackMan_.elf secondary-outputs
 
 # Tool invocations
-Project_PackMan_.elf Project_PackMan_.map: $(OBJS) $(USER_OBJS) C:\Ian_Jung\workplace\Harman_ARM\Project_PackMan_\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Project_PackMan_.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Ian_Jung\workplace\Harman_ARM\Project_PackMan_\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project_PackMan_.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Project_PackMan_.elf Project_PackMan_.map: $(OBJS) $(USER_OBJS) C:\Ian_Jung\workplace\Project\Project_Pacman\Project_PackMan_\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Project_PackMan_.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Ian_Jung\workplace\Project\Project_Pacman\Project_PackMan_\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project_PackMan_.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
