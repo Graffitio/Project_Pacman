@@ -17,3 +17,21 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Ian_Jung\workplace\
 
 !ENTRY org.eclipse.cdt.core 1 0 2023-09-07 08:36:34.208
 !MESSAGE Indexed 'Project_PackMan_' (36 sources, 161 headers) in 6.5 sec: 15,099 declarations; 77,870 references; 10 unresolved inclusions; 1,401 syntax errors; 3,042 unresolved names (3.2%)
+!SESSION 2023-09-08 15:40:31.983 -----------------------------------------------
+eclipse.buildId=Version 1.13.1
+java.version=17.0.6
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-09-08 15:40:42.474
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-09-08 15:40:42.490
+!MESSAGE Log4j2 initialized with config file C:\Ian_Jung\workplace\Project\Project_Pacman\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-09-08 15:40:49.667
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2023-09-08 15:44:14.736
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.gdb.internal.ui.actions.DsfTerminateCommand$3$1@43d53157): Status OK: unknown code=0 OK' resulted in a rejected execution exception.

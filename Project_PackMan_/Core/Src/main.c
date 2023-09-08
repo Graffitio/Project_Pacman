@@ -99,10 +99,10 @@ void SystemClock_Config(void);
 Direction Dir_Joystick() // 조이스틱 방향 출력 함수
 {
 	// 중간값에 가까워질수록 민감도 높아짐.
-	if(dir[0] > 3190) return LEFT;
-	else if(dir[0] < 500) return RIGHT;
-	else if(dir[1] > 3190) return UP;
-	else if(dir[1] < 480) return DOWN;
+	if(dir[0] > 3150) return LEFT;
+	else if(dir[0] < 600) return RIGHT;
+	else if(dir[1] > 3150) return UP;
+	else if(dir[1] < 600) return DOWN;
 	else return NONE;
 }
 
@@ -152,7 +152,7 @@ void Move_Pacman(Character *character, Direction direc)
 void LCD_Display_Charactor(Character *character)
 {
 	uint8_t count = 0; // 먹이의 갯수를 세는 변수 count
-	lcd_clear();
+//	lcd_clear(); // 클리어하지 말고 OverWrite하면 점멸 현상 대부분 완화됨.
 	lcd_put_cur(character->row, character->col); // 캐릭터의 현재 위치로 커서 이동
 	lcd_send_data(character->image_num); // 캐릭터 이미지 데이터를 LCD에 출력
 
@@ -163,9 +163,18 @@ void LCD_Display_Charactor(Character *character)
 		{
 			if (character->past_position[i][j] != 1) // pacman이 지나가지 않은 곳에 먹이 생성
 			{
+				lcd_put_cur(character->row, character->col); // 캐릭터의 현재 위치로 커서 이동
+				lcd_send_data(character->image_num);
 				lcd_put_cur(i, j); // 지나간 위치 빼고 모든 위치에 먹이 배치
 				lcd_send_data(0xa5); // 먹이 모양 : 0xa5 / LCD 데이터 시트 참조
 				count++;
+			}
+			else if(character->past_position[i][j] = 1) // 먹이를 먹은 자리만 clear(OverWrite하기 위해)
+			{
+				lcd_put_cur(character->row, character->col); // 캐릭터의 현재 위치로 커서 이동
+				lcd_send_data(character->image_num);
+				lcd_put_cur(i, j);
+				lcd_send_data(0x20); // 빈 칸 데이터 : 0010 0000(=0x20)
 			}
 		}
 	}
@@ -188,19 +197,27 @@ void Move_Enemy(Enemy *enemy, Character character, uint8_t clk_pulse) // enemy�
 		if(move == 0)
 		{
 			if(enemy->row != character.row) // Enemy와 Charactoc의 행이 다른 경우
+			{
 				enemy->row = character.row; // Enemy는 Charactor쪽으로 이동한다.
+				lcd_put_cur(enemy->row, enemy->col);
+				lcd_send_data(enemy->image_num);
+			}
 		}
 		else if(move == 1)
 		{
 			if(enemy->col > character.col) // enemy가 charactor보다 오른쪽에 있다면,
 			{
 				enemy->col--; // 왼쪽으로 이동시켜라.
+				lcd_put_cur(enemy->row, enemy->col);
+				lcd_send_data(enemy->image_num);
 				if(enemy->col < 0) // 화면 밖으로 나가지 않도록 설정
 					enemy->col = 0;
 			}
 			else if(enemy->col < character.col) // enemy가 charactor보다 왼쪽에 있다면,
 			{
 				enemy->col++; // 오른쪽으로 이동시켜라
+				lcd_put_cur(enemy->row, enemy->col);
+				lcd_send_data(enemy->image_num);
 				if(enemy->col > 15) // 화면 밖으로 나가지 않도록 설정
 					enemy->col = 15;
 			}
@@ -244,8 +261,8 @@ Game_status GameStatus(Character *character, Enemy *enemy)
 		lcd_send_string("Start!");
 		HAL_Delay(800);
 		LevelupInit(character, enemy);
-//		TIM2->PSC = 6750; // 문어 속도 Lv1보다 빠르게
-		TIM2->PSC = 5000; // 문어 속도 Lv1보다 빠르게
+		TIM2->PSC = 8750; // 문어 속도 Lv1보다 빠르게
+//		TIM2->PSC = 5000; // 문어 속도 Lv1보다 빠르게
 		return game_status;
 	}
 	else if(cnt == 32 && level == 2)
@@ -259,8 +276,8 @@ Game_status GameStatus(Character *character, Enemy *enemy)
 		lcd_send_string("Start!");
 		HAL_Delay(800);
 		LevelupInit(character, enemy);
-//		TIM2->PSC = 4500; // 문어 속도 Lv2보다 빠르게
-		TIM2->PSC = 3500; // 문어 속도 Lv2보다 빠르게
+		TIM2->PSC = 6500; // 문어 속도 Lv2보다 빠르게
+//		TIM2->PSC = 3500; // 문어 속도 Lv2보다 빠르게
 		return game_status;
 	}
 	else if(cnt == 32 && level == 3)
@@ -491,7 +508,7 @@ int main(void)
   lcd_clear();
   lcd_put_cur(pacman.row, pacman.col);
   lcd_send_data(pacman.image_num);
-  TIM2->PSC = 8000; // 문어 속도를 좀 더 빠르게 설정
+//  TIM2->PSC = 8000; // 문어 속도를 좀 더 빠르게 설정
 
 
   /* USER CODE END 2 */
@@ -507,13 +524,13 @@ int main(void)
 	{
 		Move_Pacman(&pacman, Dir_Joystick());
 		Move_Enemy(&octopus, pacman, clk_pulse);
-		LCD_Display_Charactor(&pacman);
-		LCD_Display_Enemy(octopus);
+//		LCD_Display_Charactor(&pacman);
+//		LCD_Display_Enemy(octopus);
 
 		game_status = GameStatus(&pacman, &octopus);
 
 //		HAL_Delay(100);
-		HAL_Delay(100);
+		HAL_Delay(50);
 		LCD_Display_Charactor(&pacman);
 		LCD_Display_Enemy(octopus);
 		TIM3->CCR1 = 0;
